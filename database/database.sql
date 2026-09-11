@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS catalogo_livros
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE catalogo_livros;
+
+CREATE TABLE IF NOT EXISTS livros (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    autor VARCHAR(120) NOT NULL,
+    categoria VARCHAR(80) NOT NULL,
+    status ENUM('disponivel', 'indisponivel') NOT NULL DEFAULT 'disponivel',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
