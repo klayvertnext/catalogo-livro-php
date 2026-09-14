@@ -1,4 +1,4 @@
-# 📚 Catálogo de Livros
+ Catálogo de Livros
 
 Sistema CRUD simples para gerenciamento de um catálogo de livros, desenvolvido como desafio técnico para processo seletivo de estágio em Desenvolvimento.
 
@@ -6,7 +6,7 @@ O projeto permite cadastrar, listar, editar e excluir livros, com validações t
 
 ---
 
-## 🚀 Tecnologias utilizadas
+ Tecnologias utilizadas
 
 - HTML5
 - CSS3
@@ -19,7 +19,7 @@ O projeto permite cadastrar, listar, editar e excluir livros, com validações t
 
 ---
 
-## 📌 Funcionalidades
+ Funcionalidades
 
 - Cadastro de livros
 - Listagem de livros
@@ -37,7 +37,7 @@ O projeto permite cadastrar, listar, editar e excluir livros, com validações t
 
 ---
 
-## 📖 Dados do livro
+ Dados do livro
 
 Cada livro possui os seguintes campos:
 
@@ -53,7 +53,7 @@ Os status disponíveis são:
 
 ---
 
-## 📂 Estrutura do projeto
+ Estrutura do projeto
 
 ```text
 catalogo-livros/
@@ -77,3 +77,24 @@ catalogo-livros/
 ├── index.php
 ├── .gitignore
 └── README.md
+---
+
+ Requisitos
+
+Para executar o projeto localmente, é necessário ter:
+
+- PHP 8 ou superior
+- Apache
+- MySQL ou MariaDB
+- XAMPP, WAMP ou ambiente equivalente
+
+O projeto foi desenvolvido utilizando XAMPP.
+
+
+
+ Como executar o projeto
+
+ 1. Clone o repositório
+
+```bash
+git clone https://github.com/klayvertnext/catalogo-livro-php.git
