@@ -110,24 +110,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php endif; ?>
 
-    <form method="POST">
+    <form
+    method="POST"
+    class="book-form"
+    novalidate
+>
 
-        <div>
-            <label for="titulo">Título</label><br>
+       <div class="form-group">
+    <label for="titulo">Título</label>
 
-            <input
-                type="text"
-                id="titulo"
-                name="titulo"
-                value="<?= htmlspecialchars($titulo) ?>"
-                required
-            >
-        </div>
+    <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        value="<?= htmlspecialchars($titulo) ?>"
+        maxlength="150"
+    >
+
+    <small class="error-message"></small>
+</div>
 
         <br>
 
-        <div>
-            <label for="autor">Autor</label><br>
+        <div class="form-group">
+    <label for="autor">Autor</label>
+
+    <input
+        type="text"
+        id="autor"
+        name="autor"
+        value="<?= htmlspecialchars($autor) ?>"
+        maxlength="120"
+    >
+
+    <small class="error-message"></small>
+</div>
+
+        <br>
+
+        <div class="form-group">
+    <label for="categoria">Categoria</label>
+
+    <input
+        type="text"
+        id="categoria"
+        name="categoria"
+        value="<?= htmlspecialchars($categoria) ?>"
+        maxlength="80"
+    >
+
+    <small class="error-message"></small>
+</div>
+
+        <br>
+
+        <div class="form-group">
+    <label for="status">Status</label>
+
+    <select id="status" name="status" required>
+
+        <option
+            value="disponivel"
+            <?= $status === 'disponivel' ? 'selected' : '' ?>
+        >
+            Disponível
+        </option>
+
+        <option
+            value="indisponivel"
+            <?= $status === 'indisponivel' ? 'selected' : '' ?>
+        >
+            Indisponível
+        </option>
+
+    </select>
+</div>
+
+        <br>
+
+        <button type="submit">
+            Salvar Alterações
+        </button>
+
+    </form>
+
+<script src="assets/js/validation.js"></script>
+
+</body>
+
+</html>
 
             <input
                 type="text"
@@ -183,6 +254,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
 
     </form>
+    
+<script src="assets/js/validation.js"></script>
 
 </body>
 

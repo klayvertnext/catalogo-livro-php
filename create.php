@@ -86,51 +86,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php endif; ?>
 
-    <form method="POST" action="create.php">
+    <form
+    method="POST"
+    action="create.php"
+    class="book-form"
+    novalidate
+>
 
-        <div>
-            <label for="titulo">Título</label><br>
+        <div class="form-group">
+    <label for="titulo">Título</label>
 
-            <input
-                type="text"
-                id="titulo"
-                name="titulo"
-                value="<?= htmlspecialchars($titulo) ?>"
-                required
-            >
-        </div>
+    <input
+        type="text"
+        id="titulo"
+        name="titulo"
+        value="<?= htmlspecialchars($titulo) ?>"
+        maxlength="150"
+    >
 
-        <br>
-
-        <div>
-            <label for="autor">Autor</label><br>
-
-            <input
-                type="text"
-                id="autor"
-                name="autor"
-                value="<?= htmlspecialchars($autor) ?>"
-                required
-            >
-        </div>
+    <small class="error-message"></small>
+         </div>
 
         <br>
 
-        <div>
-            <label for="categoria">Categoria</label><br>
+        <div class="form-group">
+    <label for="autor">Autor</label>
 
-            <input
-                type="text"
-                id="categoria"
-                name="categoria"
-                value="<?= htmlspecialchars($categoria) ?>"
-                required
-            >
-        </div>
+    <input
+        type="text"
+        id="autor"
+        name="autor"
+        value="<?= htmlspecialchars($autor) ?>"
+        maxlength="120"
+    >
+
+    <small class="error-message"></small>
+</div>
 
         <br>
 
-        <div>
+        <div class="form-group">
+    <label for="categoria">Categoria</label>
+
+    <input
+        type="text"
+        id="categoria"
+        name="categoria"
+        value="<?= htmlspecialchars($categoria) ?>"
+        maxlength="80"
+    >
+
+    <small class="error-message"></small>
+</div>
+
+        <br>
+
+      <div>
             <label for="status">Status</label><br>
 
             <select id="status" name="status" required>
@@ -159,6 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
 
     </form>
+
+<script src="assets/js/validation.js"></script>
 
 </body>
 
