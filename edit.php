@@ -12,6 +12,7 @@ if (!$id) {
 }
 
 $stmt = $pdo->prepare('SELECT * FROM livros WHERE id = :id');
+
 $stmt->execute([
     ':id' => $id
 ]);
@@ -19,7 +20,7 @@ $stmt->execute([
 $livro = $stmt->fetch();
 
 if (!$livro) {
-    header('Location: index.php');
+    header('Location: index.php?error=notfound');
     exit;
 }
 
@@ -29,6 +30,7 @@ $categoria = $livro['categoria'];
 $status = $livro['status'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $titulo = trim($_POST['titulo'] ?? '');
     $autor = trim($_POST['autor'] ?? '');
     $categoria = trim($_POST['categoria'] ?? '');
@@ -46,16 +48,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = 'A categoria é obrigatória.';
     }
 
-    $statusPermitidos = ['disponivel', 'indisponivel'];
+    if (strlen($titulo) > 150) {
+        $erros[] = 'O título deve ter no máximo 150 caracteres.';
+    }
+
+    if (strlen($autor) > 120) {
+        $erros[] = 'O autor deve ter no máximo 120 caracteres.';
+    }
+
+    if (strlen($categoria) > 80) {
+        $erros[] = 'A categoria deve ter no máximo 80 caracteres.';
+    }
+
+    $statusPermitidos = [
+        'disponivel',
+        'indisponivel'
+    ];
 
     if (!in_array($status, $statusPermitidos, true)) {
         $erros[] = 'Selecione um status válido.';
     }
 
     if (empty($erros)) {
+
         $sql = '
             UPDATE livros
-            SET titulo = :titulo,
+            SET
+                titulo = :titulo,
                 autor = :autor,
                 categoria = :categoria,
                 status = :status
@@ -83,179 +102,190 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Editar Livro</title>
+
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css"
+    >
+
 </head>
 
 <body>
 
-    <h1>Editar Livro</h1>
+    <main class="container">
 
-    <p>
-        <a href="index.php">← Voltar para o catálogo</a>
-    </p>
+        <div class="card form-card">
 
-    <?php if (!empty($erros)): ?>
+            <div class="form-header">
 
-        <div>
-            <strong>Corrija os seguintes erros:</strong>
+                <h1>Editar Livro</h1>
 
-            <ul>
-                <?php foreach ($erros as $erro): ?>
-                    <li><?= htmlspecialchars($erro) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
+                <p>
+                    Atualize os dados do livro selecionado.
+                </p>
 
-    <?php endif; ?>
+            </div>
 
-    <form
-    method="POST"
-    class="book-form"
-    novalidate
->
 
-       <div class="form-group">
-    <label for="titulo">Título</label>
+            <?php if (!empty($erros)): ?>
 
-    <input
-        type="text"
-        id="titulo"
-        name="titulo"
-        value="<?= htmlspecialchars($titulo) ?>"
-        maxlength="150"
-    >
+                <div class="alert alert-error">
 
-    <small class="error-message"></small>
-</div>
+                    <strong>
+                        Corrija os seguintes erros:
+                    </strong>
 
-        <br>
+                    <ul>
 
-        <div class="form-group">
-    <label for="autor">Autor</label>
+                        <?php foreach ($erros as $erro): ?>
 
-    <input
-        type="text"
-        id="autor"
-        name="autor"
-        value="<?= htmlspecialchars($autor) ?>"
-        maxlength="120"
-    >
+                            <li>
+                                <?= htmlspecialchars($erro) ?>
+                            </li>
 
-    <small class="error-message"></small>
-</div>
+                        <?php endforeach; ?>
 
-        <br>
+                    </ul>
 
-        <div class="form-group">
-    <label for="categoria">Categoria</label>
+                </div>
 
-    <input
-        type="text"
-        id="categoria"
-        name="categoria"
-        value="<?= htmlspecialchars($categoria) ?>"
-        maxlength="80"
-    >
+            <?php endif; ?>
 
-    <small class="error-message"></small>
-</div>
 
-        <br>
-
-        <div class="form-group">
-    <label for="status">Status</label>
-
-    <select id="status" name="status" required>
-
-        <option
-            value="disponivel"
-            <?= $status === 'disponivel' ? 'selected' : '' ?>
-        >
-            Disponível
-        </option>
-
-        <option
-            value="indisponivel"
-            <?= $status === 'indisponivel' ? 'selected' : '' ?>
-        >
-            Indisponível
-        </option>
-
-    </select>
-</div>
-
-        <br>
-
-        <button type="submit">
-            Salvar Alterações
-        </button>
-
-    </form>
-
-<script src="assets/js/validation.js"></script>
-
-</body>
-
-</html>
-
-            <input
-                type="text"
-                id="autor"
-                name="autor"
-                value="<?= htmlspecialchars($autor) ?>"
-                required
+            <form
+                method="POST"
+                class="book-form"
+                novalidate
             >
+
+                <div class="form-group">
+
+                    <label for="titulo">
+                        Título
+                    </label>
+
+                    <input
+                        type="text"
+                        id="titulo"
+                        name="titulo"
+                        value="<?= htmlspecialchars($titulo) ?>"
+                        maxlength="150"
+                    >
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="autor">
+                        Autor
+                    </label>
+
+                    <input
+                        type="text"
+                        id="autor"
+                        name="autor"
+                        value="<?= htmlspecialchars($autor) ?>"
+                        maxlength="120"
+                    >
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="categoria">
+                        Categoria
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categoria"
+                        name="categoria"
+                        value="<?= htmlspecialchars($categoria) ?>"
+                        maxlength="80"
+                    >
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option
+                            value="disponivel"
+                            <?= $status === 'disponivel' ? 'selected' : '' ?>
+                        >
+                            Disponível
+                        </option>
+
+                        <option
+                            value="indisponivel"
+                            <?= $status === 'indisponivel' ? 'selected' : '' ?>
+                        >
+                            Indisponível
+                        </option>
+
+                    </select>
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Salvar Alterações
+                    </button>
+
+                    <a
+                        href="index.php"
+                        class="btn btn-secondary"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
         </div>
 
-        <br>
+    </main>
 
-        <div>
-            <label for="categoria">Categoria</label><br>
 
-            <input
-                type="text"
-                id="categoria"
-                name="categoria"
-                value="<?= htmlspecialchars($categoria) ?>"
-                required
-            >
-        </div>
-
-        <br>
-
-        <div>
-            <label for="status">Status</label><br>
-
-            <select id="status" name="status" required>
-
-                <option
-                    value="disponivel"
-                    <?= $status === 'disponivel' ? 'selected' : '' ?>
-                >
-                    Disponível
-                </option>
-
-                <option
-                    value="indisponivel"
-                    <?= $status === 'indisponivel' ? 'selected' : '' ?>
-                >
-                    Indisponível
-                </option>
-
-            </select>
-        </div>
-
-        <br>
-
-        <button type="submit">
-            Salvar Alterações
-        </button>
-
-    </form>
-    
-<script src="assets/js/validation.js"></script>
+    <script src="assets/js/validation.js"></script>
 
 </body>
 

@@ -14,61 +14,73 @@ $livros = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Livros</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
+
+<main class="container">
 
 <body>
 
-    <h1>Catálogo de Livros</h1>
+    <div class="page-header">
 
-    <p>
-        <a href="create.php">+ Adicionar Livro</a>
-    </p>
+    <div>
+        <h1>Catálogo de Livros</h1>
+        <p>Gerencie os livros cadastrados no sistema.</p>
+    </div>
+
+    <a href="create.php" class="btn btn-primary">
+        + Adicionar Livro
+    </a>
+
+</div>
 
     <?php if (isset($_GET['success']) && $_GET['success'] === 'created'): ?>
 
-        <p>
-            Livro cadastrado com sucesso!
-        </p>
+       <div class="alert alert-success">
+    Livro cadastrado com sucesso!
+</div>
 
     <?php endif; ?>
 
 
     <?php if (isset($_GET['success']) && $_GET['success'] === 'updated'): ?>
 
-        <p>
-            Livro atualizado com sucesso!
-        </p>
+       <div class="alert alert-success">
+    Livro atualizado com sucesso!
+</div>
 
     <?php endif; ?>
 
     <?php if (isset($_GET['success']) && $_GET['success'] === 'deleted'): ?>
 
-    <p>
-        Livro excluído com sucesso!
-    </p>
+   <div class="alert alert-success">
+    Livro excluído com sucesso!
+</div>
 
     <?php endif; ?>
 
     <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid'): ?>
 
-    <p>
-        ID do livro inválido.
-    </p>
+    <div class="alert alert-error">
+    ID do livro inválido.
+</div>
 
     <?php endif; ?>
 
     <?php if (isset($_GET['error']) && $_GET['error'] === 'notfound'): ?>
 
-    <p>
-        Livro não encontrado.
-    </p>
+   <div class="alert alert-error">
+    Livro não encontrado.
+</div>
 
 <?php endif; ?>
 
 
     <?php if (count($livros) > 0): ?>
 
-        <table border="1" cellpadding="10">
+        <table>
 
             <thead>
                 <tr>
@@ -104,35 +116,58 @@ $livros = $stmt->fetchAll();
                         </td>
 
                         <td>
-                            <?= htmlspecialchars($livro['status']) ?>
-                        </td>
 
-                        <td>
+    <?php if ($livro['status'] === 'disponivel'): ?>
 
-                            <a href="edit.php?id=<?= $livro['id'] ?>">
-                               Editar 
-                            </a>
+        <span class="badge badge-success">
+            Disponível
+        </span>
 
-                            <form
-                                action="delete.php"
-                                method="POST"
-                                style="display: inline;"
-                                onsubmit="return confirm('Tem certeza que deseja excluir este livro?');"
-                            >
+    <?php else: ?>
 
-                            <input
-                                type="hidden"
-                                name="id"
-                                value="<?= $livro['id'] ?>"
-                            >
+        <span class="badge badge-danger">
+            Indisponível
+        </span>
 
-                            <button type="submit">
-                               Excluir
-                            </button>
+    <?php endif; ?>
 
-                            </form>
+</td>
 
-                        </td>
+<td>
+
+    <div class="actions">
+
+        <a
+            href="edit.php?id=<?= $livro['id'] ?>"
+            class="btn btn-secondary"
+        >
+            Editar
+        </a>
+
+        <form
+            action="delete.php"
+            method="POST"
+            onsubmit="return confirm('Tem certeza que deseja excluir este livro?');"
+        >
+
+            <input
+                type="hidden"
+                name="id"
+                value="<?= $livro['id'] ?>"
+            >
+
+            <button
+                type="submit"
+                class="btn btn-danger"
+            >
+                Excluir
+            </button>
+
+        </form>
+
+    </div>
+
+</td>
 
                     </tr>
 
@@ -141,14 +176,18 @@ $livros = $stmt->fetchAll();
             </tbody>
 
         </table>
+     </div>
+</div>
 
     <?php else: ?>
 
-        <p>
-            Nenhum livro cadastrado.
-        </p>
+       <div class="card empty-state">
+    Nenhum livro cadastrado.
+</div>
 
     <?php endif; ?>
+
+</main>
 
 </body>
 
