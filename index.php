@@ -20,6 +20,18 @@ $livros = $stmt->fetchAll();
 
     <h1>Catálogo de Livros</h1>
 
+ <p>
+    <a href="create.php">+ Adicionar Livro</a>
+</p>
+
+<?php if (isset($_GET['success']) && $_GET['success'] === 'created'): ?>
+
+ <p>
+        Livro cadastrado com sucesso!
+ </p>
+
+<?php endif; ?>
+
     <?php if (count($livros) > 0): ?>
 
         <table border="1" cellpadding="10">
