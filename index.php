@@ -20,21 +20,32 @@ $livros = $stmt->fetchAll();
 
     <h1>Catálogo de Livros</h1>
 
- <p>
-    <a href="create.php">+ Adicionar Livro</a>
-</p>
+    <p>
+        <a href="create.php">+ Adicionar Livro</a>
+    </p>
 
-<?php if (isset($_GET['success']) && $_GET['success'] === 'created'): ?>
+    <?php if (isset($_GET['success']) && $_GET['success'] === 'created'): ?>
 
- <p>
-        Livro cadastrado com sucesso!
- </p>
+        <p>
+            Livro cadastrado com sucesso!
+        </p>
 
-<?php endif; ?>
+    <?php endif; ?>
+
+
+    <?php if (isset($_GET['success']) && $_GET['success'] === 'updated'): ?>
+
+        <p>
+            Livro atualizado com sucesso!
+        </p>
+
+    <?php endif; ?>
+
 
     <?php if (count($livros) > 0): ?>
 
         <table border="1" cellpadding="10">
+
             <thead>
                 <tr>
                     <th>ID</th>
@@ -42,6 +53,7 @@ $livros = $stmt->fetchAll();
                     <th>Autor</th>
                     <th>Categoria</th>
                     <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
 
@@ -50,7 +62,10 @@ $livros = $stmt->fetchAll();
                 <?php foreach ($livros as $livro): ?>
 
                     <tr>
-                        <td><?= $livro['id'] ?></td>
+
+                        <td>
+                            <?= $livro['id'] ?>
+                        </td>
 
                         <td>
                             <?= htmlspecialchars($livro['titulo']) ?>
@@ -67,16 +82,26 @@ $livros = $stmt->fetchAll();
                         <td>
                             <?= htmlspecialchars($livro['status']) ?>
                         </td>
+
+                        <td>
+                            <a href="edit.php?id=<?= $livro['id'] ?>">
+                                Editar
+                            </a>
+                        </td>
+
                     </tr>
 
                 <?php endforeach; ?>
 
             </tbody>
+
         </table>
 
     <?php else: ?>
 
-        <p>Nenhum livro cadastrado.</p>
+        <p>
+            Nenhum livro cadastrado.
+        </p>
 
     <?php endif; ?>
 
