@@ -41,6 +41,30 @@ $livros = $stmt->fetchAll();
 
     <?php endif; ?>
 
+    <?php if (isset($_GET['success']) && $_GET['success'] === 'deleted'): ?>
+
+    <p>
+        Livro excluído com sucesso!
+    </p>
+
+    <?php endif; ?>
+
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid'): ?>
+
+    <p>
+        ID do livro inválido.
+    </p>
+
+    <?php endif; ?>
+
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'notfound'): ?>
+
+    <p>
+        Livro não encontrado.
+    </p>
+
+<?php endif; ?>
+
 
     <?php if (count($livros) > 0): ?>
 
@@ -84,9 +108,30 @@ $livros = $stmt->fetchAll();
                         </td>
 
                         <td>
+
                             <a href="edit.php?id=<?= $livro['id'] ?>">
-                                Editar
+                               Editar 
                             </a>
+
+                            <form
+                                action="delete.php"
+                                method="POST"
+                                style="display: inline;"
+                                onsubmit="return confirm('Tem certeza que deseja excluir este livro?');"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<?= $livro['id'] ?>"
+                            >
+
+                            <button type="submit">
+                               Excluir
+                            </button>
+
+                            </form>
+
                         </td>
 
                     </tr>
